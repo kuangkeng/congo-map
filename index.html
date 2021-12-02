@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.2/css/uikit.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.2/js/uikit.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+	  <script type="text/javascript" src="js/tropical-map-10.js"></script>
+	  <script type="text/javascript" src="js/indonesia-malaysia.js"></script>
+	  <script type="text/javascript" src="js/congo-maps.js"></script>
+  </head>
+
+<style>
+body {
+  font-family: 'Lusitana',serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: black;
+  box-sizing: border-box;
+  margin: 0;
+} 
+#wrapper {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  margin: 0 auto;
+  height: 500px;
+}
+.mapbox { 
+  height: 500px; 
+  width: 100%;
+  margin: 0px;
+}
+.leaflet-bottom {
+	bottom: 1rem;
+}
+.leaflet-right {
+	right: 1rem;
+}
+.leaflet-tooltip-top:before, 
+.leaflet-tooltip-bottom:before, 
+.leaflet-tooltip-left:before, 
+.leaflet-tooltip-right:before {
+    border: none !important;
+}
+.leaflet-tooltip{
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 13px;
+  text-align: center;
+	color: #3f3f3f;
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
+  background-color: rgba(0,0,0,0) !important;
+  border:none !important;
+  box-shadow: none !important;
+}
+.leaflet-tooltip-pane {
+  z-index: 666;
+}
+.mapbox {
+  position: relative;
+  z-index: 0 !important;
+}
+#map-texts {
+  position: relative;
+  z-index: 999;
+}
+.scroll-text p {
+  font-size: 16px !important;
+}
+
+@media screen and (max-width: 500px) {
+  .scroll-text {
+    margin-bottom: 400px !important;
+  }
+  .scroll-text.scroll-break {
+    margin-bottom: 0 !important;
+  }
+}
+@media screen and (min-width: 501px) {
+  .scroll-text {
+    margin-bottom: 500px !important;
+  }
+  .scroll-text.scroll-break {
+    margin-bottom: 0 !important;
+    width: 100% !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div id="wrapper"> 
+    <div class="mapbox" id="map-container" uk-sticky="bottom:#map-texts"></div>
+    <div id="map-texts">
+      <div class="uk-container uk-container-xsmall">
+        <ul class="uk-list" uk-scrollspy="cls: uk-animation-fade; target: > li; repeat: true">
+          <li id="t1" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t2" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t3" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t4" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t5" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+        </ul> 
+      </div> 
+    </div>  
+</div>  
+
+<script type="text/javascript">
+var zoomlevel;
+if(window.innerHeight<800){
+  zoomlevel = 2.3;
+} else if(window.innerHeight<400){
+  zoomlevel = 4; //need to adjust the zoom level for mobile screen
+}
+
+L.mapbox.accessToken = 'pk.eyJ1Ijoia3VhbmdrZW5nIiwiYSI6ImNrd3A1cnNsNTA5cGMyd3FvYWJxZWk5bnUifQ.8LExDPdXiAr4khBDLmIjEA';
+
+var mymap = L.map('map-container',{
+  zoomControl:false, 
+  scrollWheelZoom:false, 
+  dragging:false, 
+  zoomSnap:0.1,
+  doubleClickZoom: false,
+}).setView([-1.529, 23.997], zoomlevel);
+
+L.tileLayer(
+    'https://api.mapbox.com/styles/v1/kuangkeng/ckwp5ycyw4sr214o5rl6u4svt/tiles/256/{z}/{x}/{y}@2x?access_token=' + L.mapbox.accessToken, {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '© <a href="https://www.mapbox.com/contribute/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mymap);
+
+function style_tropical(feature) {
+    return {
+        fillColor: '#026440',
+        weight: 0.5,
+        opacity: 0,
+        color: '#d3d3d3',
+        fillOpacity: 0
+    };
+}
+
+function style_idmy(feature) {
+    return {
+        fillColor: '#e41a1c',
+        weight: 0.5,
+        opacity: 1,
+        color: '#d3d3d3',
+        fillOpacity: 1
+    };
+}
+
+function style_congo(feature) {
+    return {
+        fillColor: '#026440',
+        weight: 0.5,
+        opacity: 1,
+        color: '#d3d3d3',
+        fillOpacity: 0.8
+    };
+}
+
+function style_countries(feature) {
+    return {
+        fillColor: '#026440',
+        weight: 1,
+        opacity: 0.7,
+        color: '#e41a1c',
+        fillOpacity: 0
+    };
+}
+
+function style_square1(feature) {
+    return {
+        fillColor: '#e41a1c',
+        weight: 0.5,
+        opacity: 0,
+        color: '#d3d3d3',
+        fillOpacity: 0
+    };
+}
+
+function style_square2(feature) {
+    return {
+        fillColor: '#e41a1c',
+        weight: 0.5,
+        opacity: 0,
+        color: '#d3d3d3',
+        fillOpacity: 0
+    };
+}
+
+//create pane to fix the zindex
+mymap.createPane('pane_tropical');
+mymap.createPane('pane_idmy');
+mymap.createPane('pane_congo');
+mymap.createPane('pane_square1');
+mymap.createPane('pane_square2');
+mymap.createPane('pane_countries');
+
+//Set up layers
+var layer_tropical = L.geoJSON(tropical_map, {
+    style: style_tropical,
+    pane: 'pane_tropical'
+});
+
+var layer_idmy = L.geoJSON(idmy_map, {
+    style: style_idmy,
+    pane: 'pane_idmy'
+});
+
+var layer_congo = L.geoJSON(congo_map, {
+    style: style_congo,
+    pane: 'pane_congo'
+});
+
+const determineTooltipDirection = country => {
+    if (country === 'Republic<br>of Congo') return 'top'
+    if (country === 'Dem. Rep.<br>of Congo') return 'top'
+    return 'center'
+}
+
+var layer_countries = L.geoJSON(countries, {
+    style: style_countries,
+    pane: 'pane_countries',
+    onEachFeature: (feature, layer) => {
+      layer.bindTooltip(feature.properties['nom_pays'], {
+        permanent: true,
+        // direction: 'center',
+        direction: determineTooltipDirection(
+          feature.properties['nom_pays']
+        ),
+        interactive: true,
+  })
+    }
+});
+
+var layer_square1 = L.geoJSON(square_1, {
+    style: style_square1,
+    pane: 'pane_square1'
+});
+
+var layer_square2 = L.geoJSON(square_2, {
+    style: style_square2,
+    pane: 'pane_square2'
+});
+
+const congoMarker1 = L.marker([8.39,10.46]),
+	congoMarker2 = L.marker([8.39,35.42]),
+	congoMarker3 = L.marker([-14.11,10.46]),
+	congoMarker4 = L.marker([-14.11,35.42]);
+
+const flyTime = 2;	
+
+const congoMarkers = new L.featureGroup([
+	congoMarker1,
+	congoMarker2,
+	congoMarker3,
+	congoMarker4,
+]);
+
+//click to add map layers
+$('#t1').click(function () {
+	console.log("t1");
+  mymap.addLayer(layer_tropical);
+  fadeInLayerLeaflet(layer_tropical, 0, 0.8, 0.02, 30)
+});
+
+$('#t2').click(function () {
+	console.log("t2");
+	mymap.addLayer(layer_idmy);
+});
+
+$('#t3').click(function () {
+	console.log("t3");
+	mymap.addLayer(layer_congo);
+  fadeOutLayer(layer_tropical, 0.8, 0.4, 0.02, 30);
+});
+
+$('#t4').click(function () {
+	console.log("t4");
+	congoMarkers.addTo(mymap);
+	congoMarkers.eachLayer(function(layer) {
+        layer.setOpacity(0);
+      });
+	mymap.flyToBounds(congoMarkers.getBounds(), {
+      padding: [50, 50],
+      duration: flyTime
+    });
+  fadeOutLayer(layer_tropical, 0.4, 0, 0.02, 30)
+});
+
+$('#t5').click(function () {
+	console.log("t5");
+	mymap.addLayer(layer_countries);
+  fadeOutLayer(layer_congo, 0.6, 0.4, 0.02, 30)
+});
+
+$('#t6').click(function () {
+	console.log("t6");
+  layer_countries.eachLayer(function (layer) {  
+    if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
+      layer.setStyle({weight :0});
+      layer.closeTooltip(); 
+    }
+    if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
+      layer.setStyle({weight :0});
+      layer.closeTooltip(); 
+    }
+    if(layer.feature.properties['nom_pays'] == 'Gabon') {    
+      layer.setStyle({weight :0});
+      layer.closeTooltip(); 
+    }
+  });
+});
+
+$('#t7').click(function () {
+	console.log("t7");
+  mymap.addLayer(layer_square1);
+  fadeInLayerLeaflet(layer_square1, 0, 0.7, 0.02, 30)
+});
+
+$('#t8').click(function () {
+	console.log("t8");
+	fadeOutLayer(layer_square1, 0.6, 0, 0.02, 30)
+  mymap.addLayer(layer_square2);
+  fadeInLayerLeaflet(layer_square2, 0, 0.7, 0.02, 30)
+  layer_countries.eachLayer(function (layer) {  
+    if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
+      layer.setStyle({weight :0});
+      layer.closeTooltip(); 
+    }
+    if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+      layer.setStyle({weight :0});
+      layer.closeTooltip(); 
+    }
+  });
+});
+
+mymap.getPane('pane_countries').style.zIndex = 250;
+mymap.getPane('pane_square2').style.zIndex = 240;
+mymap.getPane('pane_square1').style.zIndex = 230;
+mymap.getPane('pane_congo').style.zIndex = 220;
+mymap.getPane('pane_idmy').style.zIndex = 210;
+mymap.getPane('pane_tropical').style.zIndex = 200;
+
+// Fade-in/out effects for layers
+function fadeInLayerLeaflet(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (opacity < finalOpacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        fillOpacity: opacity
+      });
+      opacity = opacity + opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+function fadeOutLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (finalOpacity < opacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        fillOpacity: opacity
+      });
+      opacity = opacity - opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+</script>
+</body>
+</html>
