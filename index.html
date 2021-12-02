@@ -2,12 +2,11 @@
 <html lang="en">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.2/css/uikit.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.2/js/uikit.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.js"></script>
 	  <script type="text/javascript" src="js/tropical-map-10.js"></script>
 	  <script type="text/javascript" src="js/indonesia-malaysia.js"></script>
 	  <script type="text/javascript" src="js/congo-maps.js"></script>
@@ -31,8 +30,12 @@ body {
 }
 .mapbox { 
   height: 500px; 
-  width: 100%;
+  width: 800px;
   margin: 0px;
+  position: fixed;
+  top:0px;
+  margin: auto 0px;
+  z-index: 0 !important;
 }
 .leaflet-bottom {
 	bottom: 1rem;
@@ -60,33 +63,45 @@ body {
 .leaflet-tooltip-pane {
   z-index: 666;
 }
-.mapbox {
-  position: relative;
-  z-index: 0 !important;
+.container {
+  padding-left: 40px;
+  padding-right: 40px;
 }
 #map-texts {
   position: relative;
   z-index: 999;
 }
+.scroll-text{
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background: rgba(255,255,255,.8);
+
+}
 .scroll-text p {
   font-size: 16px !important;
+  margin: 0px;
+}
+#t8{
+  margin-bottom: 800px !important;
+}
+#tfirst, #tlast {
+  border: 0px;
+  background: rgba(255,255,255,0);
+}
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 @media screen and (max-width: 500px) {
   .scroll-text {
     margin-bottom: 400px !important;
   }
-  .scroll-text.scroll-break {
-    margin-bottom: 0 !important;
-  }
 }
 @media screen and (min-width: 501px) {
   .scroll-text {
     margin-bottom: 500px !important;
-  }
-  .scroll-text.scroll-break {
-    margin-bottom: 0 !important;
-    width: 100% !important;
   }
 }
 
@@ -95,28 +110,39 @@ body {
 <body>
 
 <div id="wrapper"> 
-    <div class="mapbox" id="map-container" uk-sticky="bottom:#map-texts"></div>
+    <div class="mapbox" id="map-container" ></div>
     <div id="map-texts">
-      <div class="uk-container uk-container-xsmall">
-        <ul class="uk-list" uk-scrollspy="cls: uk-animation-fade; target: > li; repeat: true">
-          <li id="t1" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+      <div class="container">
+        <ul>
+          <li id="tfirst" class="scroll-text"></li>
+          <li id="t1" class="scroll-text">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </li>
-          <li id="t2" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+          <li id="t2" class="scroll-text">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </li>
-          <li id="t3" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+          <li id="t3" class="scroll-text">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </li>
-          <li id="t4" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+          <li id="t4" class="scroll-text">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </li>
-          <li id="t5" class="scroll-text uk-overlay-default uk-padding-small uk-border-rounded">
+          <li id="t5" class="scroll-text">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </li>
+          <li id="t6" class="scroll-text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t7" class="scroll-text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="t8" class="scroll-text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </li>
+          <li id="tlast" class="scroll-text"></li>
         </ul> 
       </div> 
-    </div>  
+    </div> 
 </div>  
 
 <script type="text/javascript">
@@ -273,82 +299,147 @@ const congoMarkers = new L.featureGroup([
 	congoMarker4,
 ]);
 
-//click to add map layers
-$('#t1').click(function () {
-	console.log("t1");
-  mymap.addLayer(layer_tropical);
-  fadeInLayerLeaflet(layer_tropical, 0, 0.8, 0.02, 30)
+//waypoint transition
+const offsetVal = '60%';
+new Waypoint({
+  element: document.getElementById('t1'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t1");
+      mymap.addLayer(layer_tropical);
+      fadeInLayerLeaflet(layer_tropical, 0, 0.8, 0.02, 30)
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
 });
 
-$('#t2').click(function () {
-	console.log("t2");
-	mymap.addLayer(layer_idmy);
+new Waypoint({
+  element: document.getElementById('t2'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t2");
+	    mymap.addLayer(layer_idmy);
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
 });
 
-$('#t3').click(function () {
-	console.log("t3");
-	mymap.addLayer(layer_congo);
-  fadeOutLayer(layer_tropical, 0.8, 0.4, 0.02, 30);
+new Waypoint({
+  element: document.getElementById('t3'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t3");
+      mymap.addLayer(layer_congo);
+      fadeOutLayer(layer_tropical, 0.8, 0.4, 0.02, 30);
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
 });
 
-$('#t4').click(function () {
-	console.log("t4");
-	congoMarkers.addTo(mymap);
-	congoMarkers.eachLayer(function(layer) {
-        layer.setOpacity(0);
+new Waypoint({
+  element: document.getElementById('t4'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t4");
+      congoMarkers.addTo(mymap);
+      congoMarkers.eachLayer(function(layer) {
+            layer.setOpacity(0);
+          });
+      mymap.flyToBounds(congoMarkers.getBounds(), {
+          padding: [50, 50],
+          duration: flyTime
+        });
+      fadeOutLayer(layer_tropical, 0.4, 0, 0.02, 30)
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
+});
+
+new Waypoint({
+  element: document.getElementById('t5'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t5");
+      mymap.addLayer(layer_countries);
+      fadeOutLayer(layer_congo, 0.6, 0.4, 0.02, 30)
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
+});
+
+new Waypoint({
+  element: document.getElementById('t6'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t6");
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
+          layer.setStyle({weight :0});
+          layer.closeTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
+          layer.setStyle({weight :0});
+          layer.closeTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Gabon') {    
+          layer.setStyle({weight :0});
+          layer.closeTooltip(); 
+        }
+      });      
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
+});
+
+new Waypoint({
+  element: document.getElementById('t7'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t7");
+      mymap.addLayer(layer_square1);
+      fadeInLayerLeaflet(layer_square1, 0, 0.7, 0.02, 30)
+    } else {
+      
+    }
+  },
+  offset: offsetVal,
+});
+
+new Waypoint({
+  element: document.getElementById('t8'),
+  handler: direction => {
+    if (direction === 'down') {
+      console.log("t8");
+      fadeOutLayer(layer_square1, 0.6, 0, 0.02, 30)
+      mymap.addLayer(layer_square2);
+      fadeInLayerLeaflet(layer_square2, 0, 0.7, 0.02, 30)
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
+          layer.setStyle({weight :0});
+          layer.closeTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+          layer.setStyle({weight :0});
+          layer.closeTooltip(); 
+        }
       });
-	mymap.flyToBounds(congoMarkers.getBounds(), {
-      padding: [50, 50],
-      duration: flyTime
-    });
-  fadeOutLayer(layer_tropical, 0.4, 0, 0.02, 30)
-});
-
-$('#t5').click(function () {
-	console.log("t5");
-	mymap.addLayer(layer_countries);
-  fadeOutLayer(layer_congo, 0.6, 0.4, 0.02, 30)
-});
-
-$('#t6').click(function () {
-	console.log("t6");
-  layer_countries.eachLayer(function (layer) {  
-    if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
-      layer.setStyle({weight :0});
-      layer.closeTooltip(); 
+    } else {
+      
     }
-    if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
-      layer.setStyle({weight :0});
-      layer.closeTooltip(); 
-    }
-    if(layer.feature.properties['nom_pays'] == 'Gabon') {    
-      layer.setStyle({weight :0});
-      layer.closeTooltip(); 
-    }
-  });
-});
-
-$('#t7').click(function () {
-	console.log("t7");
-  mymap.addLayer(layer_square1);
-  fadeInLayerLeaflet(layer_square1, 0, 0.7, 0.02, 30)
-});
-
-$('#t8').click(function () {
-	console.log("t8");
-	fadeOutLayer(layer_square1, 0.6, 0, 0.02, 30)
-  mymap.addLayer(layer_square2);
-  fadeInLayerLeaflet(layer_square2, 0, 0.7, 0.02, 30)
-  layer_countries.eachLayer(function (layer) {  
-    if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
-      layer.setStyle({weight :0});
-      layer.closeTooltip(); 
-    }
-    if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
-      layer.setStyle({weight :0});
-      layer.closeTooltip(); 
-    }
-  });
+  },
+  offset: offsetVal,
 });
 
 mymap.getPane('pane_countries').style.zIndex = 250;
@@ -388,6 +479,9 @@ function fadeOutLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
     timer = setTimeout(changeOpacity, delay);
   }, delay)
 }
+
+
+
 
 </script>
 </body>
