@@ -491,9 +491,11 @@ new Waypoint({
     if (direction === 'down') {
       fadeOutBorder(layer_square1, 1, 0, 0.02, 10)
       fadeInBorder(layer_square2, 0, 1, 0.02, 10)
+      mymap.removeLayer(layer_square1);
     } else {
       fadeInBorder(layer_square1, 0, 1, 0.02, 10)
       fadeOutBorder(layer_square2, 1, 0, 0.02, 10)
+      mymap.addLayer(layer_square1);
     }
   },
   offset: offsetVal,
@@ -518,7 +520,6 @@ function fadeInLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
       });
       opacity = opacity + opacityStep
     }
-    
     timer = setTimeout(changeOpacity, delay);
   }, delay)
 }
@@ -527,13 +528,12 @@ function fadeOutLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
   let opacity = startOpacity;
   let timer = setTimeout(function changeOpacity() {
     if (finalOpacity < opacity) {
+      opacity = opacity - opacityStep
       lyr.setStyle({
         opacity: opacity,
         fillOpacity: opacity
       });
-      opacity = opacity - opacityStep
     }
-    
     timer = setTimeout(changeOpacity, delay);
   }, delay)
 }
@@ -548,7 +548,6 @@ function fadeInBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
       });
       opacity = opacity + opacityStep
     }
-    
     timer = setTimeout(changeOpacity, delay);
   }, delay)
 }
@@ -557,13 +556,12 @@ function fadeOutBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
   let opacity = startOpacity;
   let timer = setTimeout(function changeOpacity() {
     if (finalOpacity < opacity) {
+      opacity = opacity - opacityStep;
       lyr.setStyle({
         opacity: opacity,
-        // fillOpacity: opacity
       });
-      opacity = opacity - opacityStep
+      
     }
-    
     timer = setTimeout(changeOpacity, delay);
   }, delay)
 }
