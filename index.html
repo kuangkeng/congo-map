@@ -14,9 +14,7 @@
 
 <style>
 body {
-  font-family: 'Lusitana',serif;
-  font-size: 18px;
-  line-height: 1.5;
+  font: normal 12px/20px 'Open Sans','Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
   color: black;
   box-sizing: border-box;
   margin: 0;
@@ -79,7 +77,9 @@ body {
 
 }
 .scroll-text p {
-  font-size: 16px !important;
+  font-size: 20px;
+  line-height: 160%;
+  color: #333;
   margin: 0px;
 }
 #t8{
@@ -92,6 +92,14 @@ body {
 ul {
   list-style: none;
   padding: 0;
+}
+.idmy {
+  color:#e41a1c;
+  font-weight: 600;
+}
+.congo {
+  color:#026440;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 500px) {
@@ -116,28 +124,28 @@ ul {
         <ul>
           <li id="tfirst" class="scroll-text"></li>
           <li id="t1" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Oil palm is a tropical plant species. Its best growing areas are along a narrow band just above and below the equator. Tropical rainforests, which are home to the world's highest biodiversity, are also found in the same areas.</p>
           </li>
           <li id="t2" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>The rapid spread of palm oil plantations have replaced massive tracts of rainforests in Southeast Asia. <span class="idmy">Indonesia</span> and <span class="idmy">Malaysia</span> are the largest producers of palm oil accounting for nearly 85% of global production.</p>
           </li>
           <li id="t3" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>As agricultural land becomes increasingly scarce in Southeast Asia, and regulatory pressures continue to intensify, the <span class="congo">Congo Basin</span> could become the next frontier for oil palm expansion. </p>
           </li>
           <li id="t4" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>At 314 million hectares, the <span class="congo">Congo Basin</span> is the world's second-largest tropical forest after the Amazon.</p>
           </li>
           <li id="t5" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>It spans across 6 central African countries. </p>
           </li>
           <li id="t6" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>There are roughly 280 million hectares of additional land suitable for oil palm in the <span class="congo">Congo Basin</span>. Most of them are found in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, <span style="font-weight: 600;">Cameroon</span> and the <span style="font-weight: 600;">Republic of Congo</span>.</p>
           </li>
           <li id="t7" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>If we put them in a box, it would cover most of the <span style="font-weight: 600;">Democratic Republic of Congo</span>.</p>
           </li>
           <li id="t8" class="scroll-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>60% of those lands that could be cleared for palm oil plantations are located in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, the focus of this investigation.</p>
           </li>
           <li id="tlast" class="scroll-text"></li>
         </ul> 
@@ -162,6 +170,8 @@ var mymap = L.map('map-container',{
   zoomSnap:0.1,
   doubleClickZoom: false,
 }).setView([-1.529, 23.997], zoomlevel);
+
+var bound_initial = mymap.getBounds();
 
 L.tileLayer(
     'https://api.mapbox.com/styles/v1/kuangkeng/ckwp5ycyw4sr214o5rl6u4svt/tiles/256/{z}/{x}/{y}@2x?access_token=' + L.mapbox.accessToken, {
@@ -213,7 +223,7 @@ function style_countries(feature) {
 function style_square1(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0.5,
+        weight: 0,
         opacity: 0,
         color: '#d3d3d3',
         fillOpacity: 0
@@ -223,7 +233,7 @@ function style_square1(feature) {
 function style_square2(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0.5,
+        weight: 0,
         opacity: 0,
         color: '#d3d3d3',
         fillOpacity: 0
@@ -301,15 +311,16 @@ const congoMarkers = new L.featureGroup([
 
 //waypoint transition
 const offsetVal = '60%';
+
 new Waypoint({
   element: document.getElementById('t1'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t1");
       mymap.addLayer(layer_tropical);
-      fadeInLayerLeaflet(layer_tropical, 0, 0.8, 0.02, 30)
+      fadeInLayer(layer_tropical, 0, 0.8, 0.02, 30)
     } else {
-      
+      fadeOutLayer(layer_tropical, 0.8, 0, 0.02, 30);
+      mymap.removeLayer(layer_tropical);
     }
   },
   offset: offsetVal,
@@ -319,10 +330,9 @@ new Waypoint({
   element: document.getElementById('t2'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t2");
 	    mymap.addLayer(layer_idmy);
     } else {
-      
+      mymap.removeLayer(layer_idmy);
     }
   },
   offset: offsetVal,
@@ -332,11 +342,11 @@ new Waypoint({
   element: document.getElementById('t3'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t3");
       mymap.addLayer(layer_congo);
       fadeOutLayer(layer_tropical, 0.8, 0.4, 0.02, 30);
     } else {
-      
+      fadeInLayer(layer_tropical, 0.4, 0.8, 0.02, 30)
+      mymap.removeLayer(layer_congo);
     }
   },
   offset: offsetVal,
@@ -346,7 +356,6 @@ new Waypoint({
   element: document.getElementById('t4'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t4");
       congoMarkers.addTo(mymap);
       congoMarkers.eachLayer(function(layer) {
             layer.setOpacity(0);
@@ -357,7 +366,10 @@ new Waypoint({
         });
       fadeOutLayer(layer_tropical, 0.4, 0, 0.02, 30)
     } else {
-      
+      fadeInLayer(layer_tropical, 0, 0.4, 0.02, 30)
+      mymap.flyToBounds(bound_initial, {
+        duration: flyTime
+      });
     }
   },
   offset: offsetVal,
@@ -367,11 +379,11 @@ new Waypoint({
   element: document.getElementById('t5'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t5");
       mymap.addLayer(layer_countries);
-      fadeOutLayer(layer_congo, 0.6, 0.4, 0.02, 30)
+      fadeOutLayer(layer_congo, 0.8, 0.4, 0.02, 30)
     } else {
-      
+      fadeInLayer(layer_congo, 0.4, 0.8, 0.02, 30)
+      mymap.removeLayer(layer_countries);
     }
   },
   offset: offsetVal,
@@ -381,7 +393,6 @@ new Waypoint({
   element: document.getElementById('t6'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t6");
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
           layer.setStyle({weight :0});
@@ -397,7 +408,20 @@ new Waypoint({
         }
       });      
     } else {
-      
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
+          layer.setStyle({weight :0.7});
+          layer.openTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
+          layer.setStyle({weight :0.7});
+          layer.openTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Gabon') {    
+          layer.setStyle({weight :0.7});
+          layer.openTooltip(); 
+        }
+      }); 
     }
   },
   offset: offsetVal,
@@ -407,11 +431,11 @@ new Waypoint({
   element: document.getElementById('t7'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t7");
       mymap.addLayer(layer_square1);
-      fadeInLayerLeaflet(layer_square1, 0, 0.7, 0.02, 30)
+      fadeInLayer(layer_square1, 0, 0.7, 0.02, 30)
     } else {
-      
+      mymap.removeLayer(layer_square1);
+      fadeOutLayer(layer_square1, 0.7, 0, 0.02, 30)
     }
   },
   offset: offsetVal,
@@ -421,10 +445,9 @@ new Waypoint({
   element: document.getElementById('t8'),
   handler: direction => {
     if (direction === 'down') {
-      console.log("t8");
       fadeOutLayer(layer_square1, 0.6, 0, 0.02, 30)
       mymap.addLayer(layer_square2);
-      fadeInLayerLeaflet(layer_square2, 0, 0.7, 0.02, 30)
+      fadeInLayer(layer_square2, 0, 0.7, 0.02, 30)
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
           layer.setStyle({weight :0});
@@ -436,7 +459,19 @@ new Waypoint({
         }
       });
     } else {
-      
+      fadeInLayer(layer_square1, 0, 0.6, 0.02, 30)
+      mymap.removeLayer(layer_square2);
+      fadeOutLayer(layer_square2, 0.7, 0, 0.02, 30)
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
+          layer.setStyle({weight :0.7});
+          layer.openTooltip(); 
+        }
+        if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+          layer.setStyle({weight :0.7});
+          layer.openTooltip(); 
+        }
+      });
     }
   },
   offset: offsetVal,
@@ -450,7 +485,7 @@ mymap.getPane('pane_idmy').style.zIndex = 210;
 mymap.getPane('pane_tropical').style.zIndex = 200;
 
 // Fade-in/out effects for layers
-function fadeInLayerLeaflet(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+function fadeInLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
   let opacity = startOpacity;
   let timer = setTimeout(function changeOpacity() {
     if (opacity < finalOpacity) {
