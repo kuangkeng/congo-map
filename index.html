@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
@@ -28,7 +31,8 @@ body {
 }
 .mapbox { 
   height: 500px; 
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   margin: 0px;
   position: fixed;
   top:0px;
@@ -74,7 +78,7 @@ body {
   padding: 15px;
   border-radius: 5px;
   background: rgba(255,255,255,.8);
-
+  margin-bottom: 500px !important;
 }
 .scroll-text p {
   font-size: 20px;
@@ -110,21 +114,25 @@ ul {
   0% {fill: #9f1214;}
   60% {fill: #e41a1c;}
 }
-/* .leaflet-pane_idmy-pane path {
-  animation: blink 1.2s infinite;
-} */
 .flash {
   animation: blink 1.2s infinite;
 }
-
-@media screen and (max-width: 500px) {
+@media (max-width: 500px){
   .scroll-text {
-    margin-bottom: 400px !important;
+    padding: 10px;
   }
-}
-@media screen and (min-width: 501px) {
-  .scroll-text {
-    margin-bottom: 500px !important;
+  .scroll-text p {
+    font-size: 14px;
+    line-height: 150%;
+  }
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .leaflet-tooltip{
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 10px;
   }
 }
 
@@ -170,12 +178,11 @@ ul {
 
 <script type="text/javascript">
 var zoomlevel;
-if(window.innerHeight<800){
+if(window.innerWidth>500){
   zoomlevel = 2.2;
-} else if(window.innerHeight<400){
-  zoomlevel = 4; //need to adjust the zoom level for mobile screen
+} else if(window.innerWidth<500){
+  zoomlevel = 1;
 }
-
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3VhbmdrZW5nIiwiYSI6ImNrd3A1cnNsNTA5cGMyd3FvYWJxZWk5bnUifQ.8LExDPdXiAr4khBDLmIjEA';
 
 var mymap = L.map('map-container',{
@@ -185,7 +192,7 @@ var mymap = L.map('map-container',{
   zoomSnap:0.1,
   doubleClickZoom: false,
   maxZoom:6,
-  minZoom:2,
+  minZoom:0.1,
 }).setView([-1.529, 23.997], zoomlevel);
 
 var bound_initial = mymap.getBounds();
@@ -282,9 +289,14 @@ var layer_congo = L.geoJSON(congo_map, {
 });
 
 const determineTooltipDirection = country => {
-    if (country === 'Republic<br>of Congo') return 'top'
     if (country === 'Dem. Rep.<br>of Congo') return 'top'
     return 'center'
+}
+const determineTooltipOffset = country => {
+  if (country === 'Cameroon') return [8,-5]  
+  if (country === 'Republic<br>of Congo') return [-14,15]
+  if (country === 'Equatorial<br>Guinea') return [15,0]
+  return [0,0]
 }
 
 var layer_countries = L.geoJSON(countries, {
@@ -294,6 +306,9 @@ var layer_countries = L.geoJSON(countries, {
       layer.bindTooltip(feature.properties['nom_pays'], {
         permanent: true,
         direction: determineTooltipDirection(
+          feature.properties['nom_pays']
+        ),
+        offset: determineTooltipOffset(
           feature.properties['nom_pays']
         ),
         interactive: true,
@@ -326,7 +341,7 @@ const congoMarkers = new L.featureGroup([
 ]);
 
 //waypoint transition
-const offsetVal = '60%';
+const offsetVal = '80%';
 
 mymap.addLayer(layer_tropical);
 mymap.addLayer(layer_square1);
@@ -418,7 +433,7 @@ new Waypoint({
     if (direction === 'down') {
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
-        layer.feature.properties['nom_pays'] == 'Central African Republic' || 
+        layer.feature.properties['nom_pays'] == 'Central African<br>Republic' || 
         layer.feature.properties['nom_pays'] == 'Gabon') {    
           layer.setStyle({weight :0});
           layer.closeTooltip(); 
@@ -427,7 +442,7 @@ new Waypoint({
     } else {
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
-        layer.feature.properties['nom_pays'] == 'Central African Republic' || 
+        layer.feature.properties['nom_pays'] == 'Central African<br>Republic' || 
         layer.feature.properties['nom_pays'] == 'Gabon') {   
           layer.setStyle({weight :1});
           layer.openTooltip(); 
