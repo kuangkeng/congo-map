@@ -212,20 +212,20 @@ function style_congo(feature) {
 
 function style_countries(feature) {
     return {
-        fillColor: '#026440',
+        fillColor: '#e41a1c',
         weight: 1,
         opacity: 0.7,
-        color: '#e41a1c',
-        fillOpacity: 0
+        color: '#545454',
+        fillOpacity: 0.4
     };
 }
 
 function style_square1(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0,
+        weight: 5,
         opacity: 0,
-        color: '#d3d3d3',
+        color: '#e41a1c',
         fillOpacity: 0
     };
 }
@@ -233,9 +233,9 @@ function style_square1(feature) {
 function style_square2(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0,
+        weight: 5,
         opacity: 0,
-        color: '#d3d3d3',
+        color: '#e41a1c',
         fillOpacity: 0
     };
 }
@@ -401,30 +401,30 @@ new Waypoint({
     if (direction === 'down') {
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
-          layer.setStyle({weight :0});
+          layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
-          layer.setStyle({weight :0});
+          layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Gabon') {    
-          layer.setStyle({weight :0});
+          layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
       });      
     } else {
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
-          layer.setStyle({weight :0.7});
+          layer.setStyle({weight :0.7, fillOpacity:0.4});
           layer.openTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
-          layer.setStyle({weight :0.7});
+          layer.setStyle({weight :0.7, fillOpacity:0.4});
           layer.openTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Gabon') {    
-          layer.setStyle({weight :0.7});
+          layer.setStyle({weight :0.7, fillOpacity:0.4});
           layer.openTooltip(); 
         }
       }); 
@@ -437,9 +437,9 @@ new Waypoint({
   element: document.getElementById('t7'),
   handler: direction => {
     if (direction === 'down') {
-      fadeInLayer(layer_square1, 0, 0.7, 0.02, 30)
+      fadeInBorder(layer_square1, 0, 1, 0.02, 30)
     } else {
-      fadeOutLayer(layer_square1, 0.7, 0, 0.02, 30)
+      fadeOutBorder(layer_square1, 1, 0, 0.02, 30)
     }
   },
   offset: offsetVal,
@@ -449,28 +449,28 @@ new Waypoint({
   element: document.getElementById('t8'),
   handler: direction => {
     if (direction === 'down') {
-      fadeOutLayer(layer_square1, 0.7, 0, 0.02, 30)
-      fadeInLayer(layer_square2, 0, 0.7, 0.02, 30)
+      fadeOutBorder(layer_square1, 1, 0, 0.02, 30)
+      fadeInBorder(layer_square2, 0, 1, 0.02, 30)
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
-          layer.setStyle({weight :0});
+          layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
-          layer.setStyle({weight :0});
+          layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
       });
     } else {
-      fadeInLayer(layer_square1, 0, 0.7, 0.02, 30)
-      fadeOutLayer(layer_square2, 0.7, 0, 0.02, 30)
+      fadeInBorder(layer_square1, 0, 1, 0.02, 30)
+      fadeOutBorder(layer_square2, 1, 0, 0.02, 30)
       layer_countries.eachLayer(function (layer) {  
         if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
-          layer.setStyle({weight :0.7});
+          layer.setStyle({weight :0.7, fillOpacity:0.4});
           layer.openTooltip(); 
         }
         if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
-          layer.setStyle({weight :0.7});
+          layer.setStyle({weight :0.7, fillOpacity:0.4});
           layer.openTooltip(); 
         }
       });
@@ -509,6 +509,36 @@ function fadeOutLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
       lyr.setStyle({
         opacity: opacity,
         fillOpacity: opacity
+      });
+      opacity = opacity - opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+function fadeInBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (opacity < finalOpacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        // fillOpacity: opacity
+      });
+      opacity = opacity + opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+function fadeOutBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (finalOpacity < opacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        // fillOpacity: opacity
       });
       opacity = opacity - opacityStep
     }
