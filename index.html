@@ -101,6 +101,21 @@ ul {
   color:#026440;
   font-weight: 600;
 }
+.countries {
+  color:#ff7f00;
+  font-weight: 600;
+}
+@keyframes blink {
+  100%,
+  0% {fill: #9f1214;}
+  60% {fill: #e41a1c;}
+}
+/* .leaflet-pane_idmy-pane path {
+  animation: blink 1.2s infinite;
+} */
+.flash {
+  animation: blink 1.2s infinite;
+}
 
 @media screen and (max-width: 500px) {
   .scroll-text {
@@ -124,7 +139,7 @@ ul {
         <ul>
           <li id="tfirst" class="scroll-text"></li>
           <li id="t1" class="scroll-text">
-            <p>Oil palm is a tropical plant species. Its best growing areas are along a narrow band just above and below the equator. Tropical rainforests, which are home to the world's highest biodiversity, are also found in the same areas.</p>
+            <p>Oil palm is a tropical plant species. Its best growing areas are along a <span class="congo">narrow band</span> just above and below the equator. Tropical rainforests, which are home to the world's highest biodiversity, are also found in the same areas.</p>
           </li>
           <li id="t2" class="scroll-text">
             <p>The rapid spread of palm oil plantations have replaced massive tracts of rainforests in Southeast Asia. <span class="idmy">Indonesia</span> and <span class="idmy">Malaysia</span> are the largest producers of palm oil accounting for nearly 85% of global production.</p>
@@ -136,13 +151,13 @@ ul {
             <p>At 314 million hectares, the <span class="congo">Congo Basin</span> is the world's second-largest tropical forest after the Amazon.</p>
           </li>
           <li id="t5" class="scroll-text">
-            <p>It spans across 6 central African countries. </p>
+            <p>It spans across  <span class="countries">6 central African countries</span>.</p>
           </li>
           <li id="t6" class="scroll-text">
             <p>There are roughly 280 million hectares of additional land suitable for oil palm in the <span class="congo">Congo Basin</span>. Most of them are found in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, <span style="font-weight: 600;">Cameroon</span> and the <span style="font-weight: 600;">Republic of Congo</span>.</p>
           </li>
           <li id="t7" class="scroll-text">
-            <p>If we put them in a box, it would cover most of the <span style="font-weight: 600;">Democratic Republic of Congo</span>.</p>
+            <p>If we put them in a <span class="idmy">box</span>, it would cover most of the <span style="font-weight: 600;">Democratic Republic of Congo</span>.</p>
           </li>
           <li id="t8" class="scroll-text">
             <p>60% of those lands that could be cleared for palm oil plantations are located in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, the focus of this investigation.</p>
@@ -217,7 +232,7 @@ function style_countries(feature) {
         fillColor: '#026440',
         weight: 1,
         opacity: 0.7,
-        color: '#e41a1c',
+        color: '#ff7f00',
         fillOpacity: 0
     };
 }
@@ -225,9 +240,9 @@ function style_countries(feature) {
 function style_square1(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0,
+        weight: 5,
         opacity: 0,
-        color: '#d3d3d3',
+        color: '#e41a1c',
         fillOpacity: 0
     };
 }
@@ -235,9 +250,9 @@ function style_square1(feature) {
 function style_square2(feature) {
     return {
         fillColor: '#e41a1c',
-        weight: 0,
+        weight: 5,
         opacity: 0,
-        color: '#d3d3d3',
+        color: '#e41a1c',
         fillOpacity: 0
     };
 }
@@ -278,7 +293,6 @@ var layer_countries = L.geoJSON(countries, {
     onEachFeature: (feature, layer) => {
       layer.bindTooltip(feature.properties['nom_pays'], {
         permanent: true,
-        // direction: 'center',
         direction: determineTooltipDirection(
           feature.properties['nom_pays']
         ),
@@ -297,12 +311,12 @@ var layer_square2 = L.geoJSON(square_2, {
     pane: 'pane_square2'
 });
 
-const congoMarker1 = L.marker([8.39,10.46]),
-	congoMarker2 = L.marker([8.39,35.42]),
-	congoMarker3 = L.marker([-14.11,10.46]),
-	congoMarker4 = L.marker([-14.11,35.42]);
+const congoMarker1 = L.marker([11.39,10.46]),
+	congoMarker2 = L.marker([11.39,35.42]),
+	congoMarker3 = L.marker([-11.11,10.46]),
+	congoMarker4 = L.marker([-11.11,35.42]);
 
-const flyTime = 2;	
+const flyTime = 2;
 
 const congoMarkers = new L.featureGroup([
 	congoMarker1,
@@ -321,7 +335,6 @@ new Waypoint({
   element: document.getElementById('t1'),
   handler: direction => {
     if (direction === 'down') {
-      
       fadeInLayer(layer_tropical, 0, 0.8, 0.02, 30)
     } else {
     //   mymap.removeLayer(layer_tropical);
@@ -337,8 +350,10 @@ new Waypoint({
   handler: direction => {
     if (direction === 'down') {
 	    mymap.addLayer(layer_idmy);
+      $('.leaflet-pane_idmy-pane path').addClass('flash');
     } else {
       mymap.removeLayer(layer_idmy);
+      $('.leaflet-pane_idmy-pane path').removeClass('flash');
     }
   },
   offset: offsetVal,
@@ -402,31 +417,19 @@ new Waypoint({
   handler: direction => {
     if (direction === 'down') {
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
-          layer.setStyle({weight :0});
-          layer.closeTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
-          layer.setStyle({weight :0});
-          layer.closeTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Gabon') {    
+        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
+        layer.feature.properties['nom_pays'] == 'Central African Republic' || 
+        layer.feature.properties['nom_pays'] == 'Gabon') {    
           layer.setStyle({weight :0});
           layer.closeTooltip(); 
         }
       });      
     } else {
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea') {    
-          layer.setStyle({weight :0.7});
-          layer.openTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Central African Republic') {    
-          layer.setStyle({weight :0.7});
-          layer.openTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Gabon') {    
-          layer.setStyle({weight :0.7});
+        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
+        layer.feature.properties['nom_pays'] == 'Central African Republic' || 
+        layer.feature.properties['nom_pays'] == 'Gabon') {   
+          layer.setStyle({weight :1});
           layer.openTooltip(); 
         }
       }); 
@@ -439,9 +442,29 @@ new Waypoint({
   element: document.getElementById('t7'),
   handler: direction => {
     if (direction === 'down') {
-      fadeInLayer(layer_square1, 0, 0.7, 0.02, 30)
+      fadeInBorder(layer_square1, 0, 1, 0.02, 30)
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Dem. Rep.<br>of Congo') {    
+          layer.setStyle({weight :3, opacity:1});
+        }
+        if(layer.feature.properties['nom_pays'] == 'Cameroon' ||
+          layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+          layer.setStyle({weight :0, fillOpacity:0});
+          layer.closeTooltip(); 
+        }
+      }); 
     } else {
-      fadeOutLayer(layer_square1, 0.7, 0, 0.02, 30)
+      fadeOutBorder(layer_square1, 1, 0, 0.02, 10)
+      layer_countries.eachLayer(function (layer) {  
+        if(layer.feature.properties['nom_pays'] == 'Dem. Rep.<br>of Congo') {    
+          layer.setStyle({weight :1, opacity:0.7});
+        }
+        if(layer.feature.properties['nom_pays'] == 'Cameroon' ||
+          layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+          layer.setStyle({weight :1, fillOpacity:0});
+          layer.openTooltip(); 
+        }
+      });
     }
   },
   offset: offsetVal,
@@ -451,40 +474,21 @@ new Waypoint({
   element: document.getElementById('t8'),
   handler: direction => {
     if (direction === 'down') {
-      fadeOutLayer(layer_square1, 0.7, 0, 0.02, 30)
-      fadeInLayer(layer_square2, 0, 0.7, 0.02, 30)
-      layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
-          layer.setStyle({weight :0});
-          layer.closeTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
-          layer.setStyle({weight :0});
-          layer.closeTooltip(); 
-        }
-      });
+      fadeOutBorder(layer_square1, 1, 0, 0.02, 10)
+      fadeInBorder(layer_square2, 0, 1, 0.02, 10)
     } else {
-      fadeInLayer(layer_square1, 0, 0.7, 0.02, 30)
-      fadeOutLayer(layer_square2, 0.7, 0, 0.02, 30)
-      layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Cameroon') {    
-          layer.setStyle({weight :0.7});
-          layer.openTooltip(); 
-        }
-        if(layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
-          layer.setStyle({weight :0.7});
-          layer.openTooltip(); 
-        }
-      });
+      fadeInBorder(layer_square1, 0, 1, 0.02, 10)
+      fadeOutBorder(layer_square2, 1, 0, 0.02, 10)
     }
   },
   offset: offsetVal,
 });
 
-mymap.getPane('pane_countries').style.zIndex = 250;
-mymap.getPane('pane_square2').style.zIndex = 240;
-mymap.getPane('pane_square1').style.zIndex = 230;
-mymap.getPane('pane_congo').style.zIndex = 220;
+
+mymap.getPane('pane_square2').style.zIndex = 250;
+mymap.getPane('pane_square1').style.zIndex = 240;
+mymap.getPane('pane_congo').style.zIndex = 230;
+mymap.getPane('pane_countries').style.zIndex = 220;
 mymap.getPane('pane_idmy').style.zIndex = 210;
 mymap.getPane('pane_tropical').style.zIndex = 200;
 
@@ -511,6 +515,36 @@ function fadeOutLayer(lyr, startOpacity, finalOpacity, opacityStep, delay) {
       lyr.setStyle({
         opacity: opacity,
         fillOpacity: opacity
+      });
+      opacity = opacity - opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+function fadeInBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (opacity < finalOpacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        // fillOpacity: opacity
+      });
+      opacity = opacity + opacityStep
+    }
+    
+    timer = setTimeout(changeOpacity, delay);
+  }, delay)
+}
+
+function fadeOutBorder(lyr, startOpacity, finalOpacity, opacityStep, delay) {
+  let opacity = startOpacity;
+  let timer = setTimeout(function changeOpacity() {
+    if (finalOpacity < opacity) {
+      lyr.setStyle({
+        opacity: opacity,
+        // fillOpacity: opacity
       });
       opacity = opacity - opacityStep
     }
