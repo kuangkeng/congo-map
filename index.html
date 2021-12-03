@@ -156,7 +156,7 @@ ul {
 <script type="text/javascript">
 var zoomlevel;
 if(window.innerHeight<800){
-  zoomlevel = 2.3;
+  zoomlevel = 2.2;
 } else if(window.innerHeight<400){
   zoomlevel = 4; //need to adjust the zoom level for mobile screen
 }
@@ -169,6 +169,8 @@ var mymap = L.map('map-container',{
   dragging:false, 
   zoomSnap:0.1,
   doubleClickZoom: false,
+  maxZoom:6,
+  minZoom:2,
 }).setView([-1.529, 23.997], zoomlevel);
 
 var bound_initial = mymap.getBounds();

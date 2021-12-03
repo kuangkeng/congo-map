@@ -169,6 +169,8 @@ var mymap = L.map('map-container',{
   dragging:false, 
   zoomSnap:0.1,
   doubleClickZoom: false,
+  maxZoom:6,
+  minZoom:2,
 }).setView([-1.529, 23.997], zoomlevel);
 
 var bound_initial = mymap.getBounds();
