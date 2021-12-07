@@ -147,28 +147,28 @@ ul {
         <ul>
           <li id="tfirst" class="scroll-text"></li>
           <li id="t1" class="scroll-text">
-            <p>Oil palm is a tropical plant species. Its best growing areas are along a <span class="congo">narrow band</span> just above and below the equator. Tropical rainforests, which are home to the world's highest biodiversity, are also found in the same areas.</p>
+            <p>Le palmier à huile est une plante tropicale. Ses meilleures zones de croissance se trouvent le long d'une étroite bande située juste au-dessus et au-dessous de l'équateur. Les forêts tropicales humides, qui renferment la plus grande biodiversité du monde, se trouvent également dans ces mêmes zones.</p>
           </li>
           <li id="t2" class="scroll-text">
-            <p>The rapid spread of palm oil plantations have replaced massive tracts of rainforests in Southeast Asia. <span class="idmy">Indonesia</span> and <span class="idmy">Malaysia</span> are the largest producers of palm oil accounting for nearly 85% of global production.</p>
+            <p>L'expansion rapide des plantations de palmier à huile a remplacé de vastes étendues de forêts tropicales en Asie du Sud-Est. <span class="idmy">L'Indonésie</span> et la <span class="idmy">Malaisie</span> sont les plus grands producteurs d'huile de palme, représentant près de 85 % de la production mondiale.</p>
           </li>
           <li id="t3" class="scroll-text">
-            <p>As agricultural land becomes increasingly scarce in Southeast Asia, and regulatory pressures continue to intensify, the <span class="congo">Congo Basin</span> could become the next frontier for oil palm expansion. </p>
+            <p>Alors que les terres agricoles se raréfient en Asie du Sud-Est et que les pressions réglementaires continuent de s'intensifier, le <span class="congo">bassin du Congo</span> pourrait devenir la prochaine frontière pour l'expansion du palmier à huile.</p>
           </li>
           <li id="t4" class="scroll-text">
-            <p>At 314 million hectares, the <span class="congo">Congo Basin</span> is the world's second-largest tropical forest after the Amazon.</p>
+            <p>Avec 314 millions d'hectares, le <span class="congo">bassin du Congo</span> est la deuxième plus grande forêt tropicale du monde après l'Amazonie.</p>
           </li>
           <li id="t5" class="scroll-text">
-            <p>It spans across  <span class="countries">6 central African countries</span>.</p>
+            <p>Il s'étend sur <span class="countries">6 pays d'Afrique centrale</span>.</p>
           </li>
           <li id="t6" class="scroll-text">
-            <p>There are roughly 280 million hectares of additional land suitable for oil palm in the <span class="congo">Congo Basin</span>. Most of them are found in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, <span style="font-weight: 600;">Cameroon</span> and the <span style="font-weight: 600;">Republic of Congo</span>.</p>
+            <p>“Il y a environ 280 millions d'hectares de terres supplémentaires convenant au palmier à huile dans le <span class="congo">bassin du Congo</span>. La plupart d'entre elles se trouvent en <span style="font-weight: 600;">République démocratique du Congo</span>, au <span style="font-weight: 600;">Cameroun</span> et en <span style="font-weight: 600;">République du Congo</span>”.</p>
           </li>
           <li id="t7" class="scroll-text">
-            <p>If we put them in a <span class="idmy">box</span>, it would cover most of the <span style="font-weight: 600;">Democratic Republic of Congo</span>.</p>
+            <p>Si on les mettait dans une <span class="idmy">boîte</span>, elle couvrirait la majeure partie de la <span style="font-weight: 600;">République démocratique du Congo</span>.</p>
           </li>
           <li id="t8" class="scroll-text">
-            <p>60% of those lands that could be cleared for palm oil plantations are located in the <span style="font-weight: 600;">Democratic Republic of Congo</span>, the focus of this investigation.</p>
+            <p>60 % de ces terres susceptibles d'être défrichées pour des plantations d'huile de palme se trouvent en <span style="font-weight: 600;">République démocratique du Congo</span>, objet de la présente enquête.</p>
           </li>
           <li id="tlast" class="scroll-text"></li>
         </ul> 
@@ -289,13 +289,13 @@ var layer_congo = L.geoJSON(congo_map, {
 });
 
 const determineTooltipDirection = country => {
-    if (country === 'Dem. Rep.<br>of Congo') return 'top'
+    if (country === 'République<br>Démocratique<br>Du Congo') return 'top'
     return 'center'
 }
 const determineTooltipOffset = country => {
-  if (country === 'Cameroon') return [8,-5]  
-  if (country === 'Republic<br>of Congo') return [-14,15]
-  if (country === 'Equatorial<br>Guinea') return [15,0]
+  if (country === 'Cameroun') return [8,-5]  
+  if (country === 'République<br>Du Congo') return [-14,15]
+  if (country === 'Guinée<br>Equatoriale') return [15,0]
   return [0,0]
 }
 
@@ -432,8 +432,8 @@ new Waypoint({
   handler: direction => {
     if (direction === 'down') {
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
-        layer.feature.properties['nom_pays'] == 'Central African<br>Republic' || 
+        if(layer.feature.properties['nom_pays'] == 'Guinée<br>Equatoriale' || 
+        layer.feature.properties['nom_pays'] == 'République<br>Centrafricaine' || 
         layer.feature.properties['nom_pays'] == 'Gabon') {    
           layer.setStyle({weight :0});
           layer.closeTooltip(); 
@@ -441,8 +441,8 @@ new Waypoint({
       });      
     } else {
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Equatorial<br>Guinea' || 
-        layer.feature.properties['nom_pays'] == 'Central African<br>Republic' || 
+        if(layer.feature.properties['nom_pays'] == 'Guinée<br>Equatoriale' || 
+        layer.feature.properties['nom_pays'] == 'République<br>Centrafricaine' || 
         layer.feature.properties['nom_pays'] == 'Gabon') {   
           layer.setStyle({weight :1});
           layer.openTooltip(); 
@@ -459,11 +459,11 @@ new Waypoint({
     if (direction === 'down') {
       fadeInBorder(layer_square1, 0, 1, 0.02, 30)
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Dem. Rep.<br>of Congo') {    
+        if(layer.feature.properties['nom_pays'] == 'République<br>Démocratique<br>Du Congo') {    
           layer.setStyle({weight :3, opacity:1});
         }
-        if(layer.feature.properties['nom_pays'] == 'Cameroon' ||
-          layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+        if(layer.feature.properties['nom_pays'] == 'Cameroun' ||
+          layer.feature.properties['nom_pays'] == 'République<br>Du Congo') {    
           layer.setStyle({weight :0, fillOpacity:0});
           layer.closeTooltip(); 
         }
@@ -471,11 +471,11 @@ new Waypoint({
     } else {
       fadeOutBorder(layer_square1, 1, 0, 0.02, 10)
       layer_countries.eachLayer(function (layer) {  
-        if(layer.feature.properties['nom_pays'] == 'Dem. Rep.<br>of Congo') {    
+        if(layer.feature.properties['nom_pays'] == 'République<br>Démocratique<br>Du Congo') {    
           layer.setStyle({weight :1, opacity:0.7});
         }
-        if(layer.feature.properties['nom_pays'] == 'Cameroon' ||
-          layer.feature.properties['nom_pays'] == 'Republic<br>of Congo') {    
+        if(layer.feature.properties['nom_pays'] == 'Cameroun' ||
+          layer.feature.properties['nom_pays'] == 'République<br>Du Congo') {    
           layer.setStyle({weight :1, fillOpacity:0});
           layer.openTooltip(); 
         }
